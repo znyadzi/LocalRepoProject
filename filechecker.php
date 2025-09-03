@@ -95,4 +95,29 @@ foreach ($projects as $project) {
 
 // Second pass: render each project using values from the parallel arrays.
 $projectCount = count($projects);
+for ($i = 0; $i < $projectCount; $i++) {
+    $project = $projects[$i];
+    // Safely read from the parallel arrays with fallbacks.
+    $createdDate = isset($projectCreation[$i]) ? $projectCreation[$i] : 'Unknown';
+    $updatedDate = isset($projectUpdate[$i]) ? $projectUpdate[$i] : 'Unknown';
+    ?>
+    <div class="project-card bg-gray-100 rounded-lg overflow-hidden cursor-pointer">
+        <div class="w-full aspect-[16/9] bg-blue-500"></div>
+            <div class="p-4">
+                <h2 class="text-lg font-semibold mb-2" style="font-size: 18px;"><?php echo htmlspecialchars($project); ?></h2>
+                <p class="text-sm text-gray-600 line-clamp-2 mb-2">A web application for task management with real-time collaboration features.</p>
+                <div class="flex space-x-2 mb-2">
+                    <i class="ri-reactjs-line text-xl text-blue-500"></i>
+                    <i class="ri-nodejs-line text-xl text-green-500"></i>
+                    <i class="ri-database-line text-xl text-purple-500"></i>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Created: <?php echo htmlspecialchars($createdDate); ?></span>
+                    <span>Updated: <?php echo htmlspecialchars($updatedDate); ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+}
 ?>
