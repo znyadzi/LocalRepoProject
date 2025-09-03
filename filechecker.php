@@ -1,6 +1,26 @@
 <?php
 $filePath = "/Applications/MAMP/htdocs";
 
+// Function definition goes here (OUTSIDE the loop)
+function getLastModifiedTime($dir) {
+    $lastModified = 0;
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+        RecursiveIteratorIterator::SELF_FIRST
+    );
+    
+    foreach ($iterator as $file) {
+        if ($file->isFile()) {
+            $fileMTime = $file->getMTime();
+            if ($fileMTime > $lastModified) {
+                $lastModified = $fileMTime;
+            }
+        }
+    }
+    
+    return $lastModified > 0 ? $lastModified : filemtime($dir);
+}
+
 $folders = [];
 $projects = [];
 $projectCreation = [];
@@ -45,9 +65,8 @@ foreach ($projects as $project) {
         $createdTs = @filemtime($projectPath);
     }
 
-    $updatedTs = @filemtime($projectPath);
+    $updatedTs = getLastModifiedTime($projectPath);
     if ($updatedTs === false) {
-        // As a last resort, reuse created timestamp or current time
         $updatedTs = $createdTs !== false ? $createdTs : time();
     }
 
