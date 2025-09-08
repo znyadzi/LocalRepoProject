@@ -52,6 +52,7 @@ if ($handle = opendir($filePath)) {
 }
 
 // Convert folder list to projects, excluding a specific folder.
+$projects[] = 'phpMyAdmin';
 foreach ($folders as $folder) {
     if ($folder != 'LocalRepoProject') {
         $projects[] = $folder;
