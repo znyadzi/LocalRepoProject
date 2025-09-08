@@ -38,3 +38,36 @@ document.addEventListener('DOMContentLoaded', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+
+
+/* Attach click listeners to project cards and redirect to current URL + /<project> */
+
+// Find all tiles that have a data-project attribute
+document.querySelectorAll('.project-card[data-project]').forEach(function(card) {
+  // When a tile is clicked...
+  card.addEventListener('click', function(event) {
+    // Read the raw project name from the data attribute
+    var projectName = card.getAttribute('data-project');
+    if (!projectName) return; // nothing to do if missing
+
+    // Build a URL object from the current location (preserves scheme, host, port)
+    var url = new URL(window.location.href);
+
+    // Normalize current path by removing any trailing slashes
+    var currentPath = url.pathname.replace(/\/+$/, '');
+
+    // Encode the project name safely for a path segment
+    var encoded = encodeURIComponent(projectName);
+
+    // Prevent redirect loop: if the path already ends with the project segment, do nothing
+    if (currentPath.endsWith('/' + encoded) || currentPath.endsWith('/' + projectName)) {
+      return;
+    }
+
+    // Append the encoded project name as a new path segment
+    url.pathname = currentPath + '/' + encoded;
+
+    // Perform the redirect
+    window.location.href = url.toString();
+  });
+});
