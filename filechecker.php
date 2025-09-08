@@ -1,6 +1,7 @@
 <?php
-// filepath: /Applications/MAMP/htdocs/LocalRepoProject/filechecker.php
-$filePath = "/Applications/MAMP/htdocs";
+
+// Use the parent directory of this script's folder (e.g. /Applications/MAMP/htdocs)
+$filePath = dirname(__DIR__);
 
 // Recursively finds the newest modification time (mtime) among all files in $dir.
 // Returns the latest file mtime found, or falls back to the directory's mtime.
